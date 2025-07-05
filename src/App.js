@@ -78,7 +78,17 @@ function App() {
         handleFileChange({ target: { files: [file] } });
     }, []);
 
-    const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop, accept: '.pdf,.docx,.pptx,.txt' });
+    const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop, accept: {
+        'application/pdf': [],
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document': [],
+        'application/vnd.openxmlformats-officedocument.presentationml.presentation': [],
+        'text/plain': [],
+        'image/png': [],
+        'image/jpeg': [],
+        'image/gif': [],
+        'image/bmp': [],
+        'image/tiff': [],
+    } });
 
     const handleFileChange = async (event) => {
         const file = event.target.files[0];
@@ -138,6 +148,11 @@ ${sourceText}`;
                 break;
             case 'problems':
                 prompt = `Generate a set of practice problems based on the following text${style}:
+
+${sourceText}`;
+                break;
+            case 'solve-math':
+                prompt = `Solve the following mathematical expression or problem. If it's not a mathematical problem, state "This is not a mathematical problem." and explain why. If it is a mathematical problem, provide the solution and the steps to solve it:
 
 ${sourceText}`;
                 break;
@@ -226,12 +241,13 @@ ${sourceText}`;
                                 {isDragActive ? "Drop the files here ..." : "Drag 'n' drop some files here, or click to select files"}
                             </Typography>
                             <Typography variant="body2" color="text.secondary">
-                                (PDF, DOCX, PPTX, TXT)
+                                (PDF, DOCX, PPTX, TXT, Images)
                             </Typography>
                         </Box>
                         <Grid container spacing={2} justifyContent="center" sx={{ mb: 2 }}>
                             <PictureAsPdf />
                             <Description />
+                            <img src="https://img.icons8.com/ios/50/000000/image.png" alt="Image icon" style={{ width: 24, height: 24, filter: 'invert(100%)' }} />
                         </Grid>
                         <TextField
                             label="Or paste your textbook chapter, article, or concept here"
@@ -273,29 +289,34 @@ ${sourceText}`;
                             3. Generate Your Learning Materials
                         </Typography>
                         <Grid container spacing={2} justifyContent="center" sx={{ mt: 2 }}>
-                            <Grid item>
+                            <Grid>
                                 <Button variant="contained" color="primary" onClick={() => handleGenerate('summarize')} startIcon={<ShortText />}>
                                     Summarize
                                 </Button>
                             </Grid>
-                            <Grid item>
+                            <Grid>
                                 <Button variant="contained" color="secondary" onClick={() => handleGenerate('questions')} startIcon={<HelpOutline />}>
                                     Generate Questions
                                 </Button>
                             </Grid>
-                            <Grid item>
+                            <Grid>
                                 <Button variant="contained" color="success" onClick={() => handleGenerate('explain')} startIcon={<School />}>
                                     Explain Simply
                                 </Button>
                             </Grid>
-                            <Grid item>
+                            <Grid>
                                 <Button variant="contained" style={{ backgroundColor: '#ff9800' }} onClick={() => handleGenerate('flashcards')} startIcon={<Create />}>
                                     Create Flashcards
                                 </Button>
                             </Grid>
-                            <Grid item>
+                            <Grid>
                                 <Button variant="contained" style={{ backgroundColor: '#673ab7' }} onClick={() => handleGenerate('problems')} startIcon={<Create />}>
                                     Practice Problems
+                                </Button>
+                            </Grid>
+                            <Grid>
+                                <Button variant="contained" color="info" onClick={() => handleGenerate('solve-math')} startIcon={<School />}>
+                                    Solve Math
                                 </Button>
                             </Grid>
                         </Grid>
@@ -372,7 +393,7 @@ ${sourceText}`;
                                     </IconButton>
                                 </div>
                             </Box>
-                            <Typography variant="body1" sx={{ whiteSpace: 'pre-wrap', mt: 2 }}>
+                            <Typography variant="body1" sx={{ whiteWhiteSpace: 'pre-wrap', mt: 2 }}>
                                 {generatedContent}
                             </Typography>
                         </CardContent>

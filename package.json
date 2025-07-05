@@ -23,6 +23,7 @@
     "react-dropzone": "^14.3.8",
     "react-scripts": "5.0.1",
     "strip-markdown": "^6.0.0",
+    "tesseract.js": "^6.0.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

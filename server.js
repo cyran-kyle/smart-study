@@ -6,6 +6,7 @@ const pptx2json = require('pptx2json');
 const fs = require('fs');
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 const strip = require('strip-markdown');
+const Tesseract = require('tesseract.js');
 
 // Load API keys from apis.json
 const geminiApiKeysEnv = process.env.GEMINI_API_KEYS;
@@ -65,6 +66,7 @@ app.post('/api/upload', upload.single('file'), async (req, res) => {
     }
 
     const filePath = req.file.path;
+    console.log('Uploaded file mimetype:', req.file.mimetype);
     let text = '';
 
     try {
@@ -77,6 +79,13 @@ app.post('/api/upload', upload.single('file'), async (req, res) => {
         } else if (req.file.mimetype === 'application/vnd.openxmlformats-officedocument.presentationml.presentation') {
             const data = await pptx2json.parse(filePath);
             text = data.slides.map(slide => slide.text).join('\n');
+        } else if (req.file.mimetype.startsWith('image/')) {
+            const { data: { text: ocrText } } = await Tesseract.recognize(
+                filePath,
+                'eng',
+                { logger: m => console.log(m) }
+            );
+            text = ocrText;
         } else {
             return res.status(400).send('Unsupported file type.');
         }
