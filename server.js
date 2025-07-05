@@ -42,8 +42,28 @@ app.post('/api/generate', async (req, res) => {
             const result = await model.generateContent(prompt);
             const response = await result.response;
             let text = await response.text();
-            // Remove common markdown formatting and trim whitespace
-            text = text.replace(/\*\*\*|\*\*|##/g, '').trim();
+            // Remove bold and italics
+            text = text.replace(/\*{1,3}(.*?)\*{1,3}/g, '$1'); // For **bold** and ***bold***
+            text = text.replace(/_{1,3}(.*?)_{1,3}/g, '$1'); // For __bold__ and ___bold___
+            // Remove headers
+            text = text.replace(/^#+\s*(.*)$/gm, '$1');
+            // Remove code blocks
+            text = text.replace(/```[\s\S]*?```/g, '');
+            // Remove inline code
+            text = text.replace(/`([^`]+?)`/g, '$1');
+            // Remove list items (unordered and ordered)
+            text = text.replace(/^[\s]*[-*+]\s/gm, '');
+            text = text.replace(/^[\s]*\d+\.\s/gm, '');
+            // Remove horizontal rules
+            text = text.replace(/^[\s]*[-*_]{3,}[\s]*$/gm, '');
+            // Remove blockquotes
+            text = text.replace(/^[\s]*>\s/gm, '');
+            // Remove links (keep text, remove URL)
+            text = text.replace(/\[(.*?)\]\(.*?\)/g, '$1');
+            // Remove images (keep alt text, remove URL)
+            text = text.replace(/!\[(.*?)\]\(.*?\)/g, '$1');
+            // Trim leading/trailing whitespace from each line and the whole text
+            text = text.split('\n').map(line => line.trim()).join('\n').trim();
             return res.send(text);
         } catch (error) {
             console.error(`Error with API key index ${currentKeyIndex}:`, error.message);
