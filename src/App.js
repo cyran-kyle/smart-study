@@ -247,7 +247,7 @@ ${sourceText}`;
                         <Grid container spacing={2} justifyContent="center" sx={{ mb: 2 }}>
                             <PictureAsPdf />
                             <Description />
-                            <img src="https://img.icons8.com/ios/50/000000/image.png" alt="Image icon" style={{ width: 24, height: 24, filter: 'invert(100%)' }} />
+                            <img src="https://img.icons8.com/ios/50/000000/image.png" alt="Image" style={{ width: 24, height: 24, filter: 'invert(100%)' }} />
                         </Grid>
                         <TextField
                             label="Or paste your textbook chapter, article, or concept here"
