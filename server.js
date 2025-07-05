@@ -41,7 +41,9 @@ app.post('/api/generate', async (req, res) => {
                         const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
             const result = await model.generateContent(prompt);
             const response = await result.response;
-            const text = await response.text();
+            let text = await response.text();
+            // Remove markdown formatting
+            text = text.replace(/\*\*\*|\*\*|##/g, '');
             return res.send(text);
         } catch (error) {
             console.error(`Error with API key index ${currentKeyIndex}:`, error.message);
