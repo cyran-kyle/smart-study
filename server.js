@@ -5,7 +5,7 @@ const mammoth = require('mammoth');
 const pptx2json = require('pptx2json');
 const fs = require('fs');
 const { GoogleGenerativeAI } = require('@google/generative-ai');
-const strip = require('strip-markdown');
+
 const Tesseract = require('tesseract.js');
 
 // Load API keys from apis.json
