@@ -26,7 +26,7 @@ let genAI = new GoogleGenerativeAI(apiKeys[currentKeyIndex]);
 
 const app = express();
 const port = 3001;
-const upload = multer({ dest: 'uploads/' });
+const upload = multer({ dest: '/tmp' });
 
 app.use(express.json());
 
