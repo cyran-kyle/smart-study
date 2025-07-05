@@ -42,8 +42,8 @@ app.post('/api/generate', async (req, res) => {
             const result = await model.generateContent(prompt);
             const response = await result.response;
             let text = await response.text();
-            // Remove specific markdown formatting and trim whitespace
-            text = text.replace(/\*{1,3}([^\*]+?)\*{1,3}|#+\s*|\s*\*{1,3}\s*|\s*#{1,6}\s*/g, '').trim();
+            // Remove common markdown formatting and trim whitespace
+            text = text.replace(/\*{1,3}(.*?)\*{1,3}|_{1,3}(.*?)_{1,3}|#+\s|`{3}[\s\S]*?`{3}|`.*?`|^\s*[-*+]\s|^\s*\d+\.\s/gm, '').trim();
             return res.send(text);
         } catch (error) {
             console.error(`Error with API key index ${currentKeyIndex}:`, error.message);
