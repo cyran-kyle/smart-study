@@ -1,5 +1,4 @@
-Okay, I understand! You're looking for the text content for a README.md file to put in your GitHub repository. That makes perfect sense.
-Here's a comprehensive README text for your "Smart Study" project, incorporating information from your repository and the deployed site. Remember to customize the "Features" section with the specific functionalities of your application.
+
 Smart Study
 Table of Contents
  * About the Project
