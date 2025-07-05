@@ -5,6 +5,7 @@ const mammoth = require('mammoth');
 const pptx2json = require('pptx2json');
 const fs = require('fs');
 const { GoogleGenerativeAI } = require('@google/generative-ai');
+const strip = require('strip-markdown');
 
 // Load API keys from apis.json
 const geminiApiKeysEnv = process.env.GEMINI_API_KEYS;
@@ -41,7 +42,9 @@ app.post('/api/generate', async (req, res) => {
                         const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
             const result = await model.generateContent(prompt);
             const response = await result.response;
-            let text = await response.text();            // Remove common markdown formatting            text = text.replace(/\*{1,3}(.*?)\*{1,3}|_{1,3}(.*?)_{1,3}|#+\s|`{3}[\s\S]*?`{3}|`.*?`|^\s*[-*+]\s|^\s*\d+\.\s|^\[.*?\]\(.*\)|!\[.*?\]\(.*\)/gm, '');            // Replace multiple newlines with a single newline            text = text.replace(/\n\s*\n/g, '\n');            // Trim leading/trailing whitespace from each line and the whole text            text = text.split('\n').map(line => line.trim()).join('\n').trim();            return res.send(text);
+            let text = await response.text();
+            text = strip(text);
+            return res.send(text);
         } catch (error) {
             console.error(`Error with API key index ${currentKeyIndex}:`, error.message);
             attempts++;
