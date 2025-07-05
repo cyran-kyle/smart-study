@@ -41,8 +41,7 @@ app.post('/api/generate', async (req, res) => {
                         const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
             const result = await model.generateContent(prompt);
             const response = await result.response;
-            let text = await response.text();            // Remove bold and italics markers            text = text.replace(/\*{1,3}/g, ''); // Remove ***, ** and *            text = text.replace(/_{1,3}/g, ''); // Remove ___, __ and _            // Remove header markers            text = text.replace(/^#+\s*/gm, ''); // Remove #, ##, etc. at the start of a line            // Trim leading/trailing whitespace from each line and the whole text            text = text.split('\n').map(line => line.trim()).join('\n').trim();            return res.send(text);
-            return res.send(text);
+            let text = await response.text();            // Remove common markdown formatting            text = text.replace(/\*{1,3}(.*?)\*{1,3}|_{1,3}(.*?)_{1,3}|#+\s|`{3}[\s\S]*?`{3}|`.*?`|^\s*[-*+]\s|^\s*\d+\.\s|^\[.*?\]\(.*?\)|!\[.*?\]\(.*\)/gm, '');            // Replace multiple newlines with a single newline            text = text.replace(/\n\s*\n/g, '\n');            // Trim leading/trailing whitespace from each line and the whole text            text = text.split('\n').map(line => line.trim()).join('\n').trim();            return res.send(text);
         } catch (error) {
             console.error(`Error with API key index ${currentKeyIndex}:`, error.message);
             attempts++;
