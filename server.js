@@ -30,6 +30,9 @@ const rotateApiKey = () => {
 };
 
 app.post('/api/generate', async (req, res) => {
+    if (!genAI) {
+        return res.status(500).send('Error: Gemini API keys not configured. Please set GEMINI_API_KEYS environment variable.');
+    }
     const { prompt } = req.body;
     let attempts = 0;
 
