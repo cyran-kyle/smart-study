@@ -303,7 +303,18 @@ ${sourceText}`;
                 </Card>
 
                 {isLoading && (
-                    <Box sx={{ display: 'flex', justifyContent: 'center', my: 4 }}>
+                    <Box sx={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        position: 'fixed',
+                        top: 0,
+                        left: 0,
+                        width: '100%',
+                        height: '100%',
+                        backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                        zIndex: 9999
+                    }}>
                         <div className="loader-container">
                             <svg version="1.1" id="L7" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                                 viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve" className="loader-svg">
