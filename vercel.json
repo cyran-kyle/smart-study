@@ -11,8 +11,7 @@
     },
     {
       "src": "server.js",
-      "use": "@vercel/node",
-      "config": { "includeFiles": ["apis.json"] }
+      "use": "@vercel/node"
     }
   ],
   "routes": [

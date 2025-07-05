@@ -7,22 +7,15 @@ const fs = require('fs');
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 
 // Load API keys from apis.json
+const geminiApiKeysEnv = process.env.GEMINI_API_KEYS;
 let apiKeys = [];
-try {
-    const apiData = fs.readFileSync('apis.json', 'utf8');
-    apiKeys = JSON.parse(apiData).keys;
-} catch (error) {
-    console.error('Error reading apis.json:', error);
-    process.exit(1);
-}
 
-if (apiKeys.length === 0) {
-    console.error('Error: No API keys found in apis.json.');
-    process.exit(1);
+if (geminiApiKeysEnv) {
+    apiKeys = geminiApiKeysEnv.split(',');
 }
 
 let currentKeyIndex = 0;
-let genAI = new GoogleGenerativeAI(apiKeys[currentKeyIndex]);
+let genAI = apiKeys.length > 0 ? new GoogleGenerativeAI(apiKeys[currentKeyIndex]) : null;
 
 const app = express();
 const port = 3001;
