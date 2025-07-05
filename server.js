@@ -43,10 +43,9 @@ app.post('/api/generate', async (req, res) => {
             const result = await model.generateContent(prompt);
             const response = await result.response;
             let text = await response.text();
-            text = strip(text);
-            // Remove specific markdown characters
-            text = text.replace(/\*{1,3}/g, ''); // Remove ***, ** and *
-            text = text.replace(/##/g, ''); // Remove ##
+            // text = strip(text); // Removed to preserve markdown
+            // text = text.replace(/\*{1,3}/g, ''); // Removed to preserve markdown
+            // text = text.replace(/##/g, ''); // Removed to preserve markdown
             text = text.trim();
             return res.send(text);
         } catch (error) {

@@ -1,0 +1,1 @@
+Refine markdown stripping to specifically remove **, ***, and ##
