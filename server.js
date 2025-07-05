@@ -44,6 +44,8 @@ app.post('/api/generate', async (req, res) => {
             const response = await result.response;
             let text = await response.text();
             text = strip(text);
+            // Additional step to remove specific markdown characters that might remain
+            text = text.replace(/\*{1,3}|##/g, '').trim();
             return res.send(text);
         } catch (error) {
             console.error(`Error with API key index ${currentKeyIndex}:`, error.message);
